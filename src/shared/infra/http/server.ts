@@ -3,11 +3,14 @@ import 'reflect-metadata';
 import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors';
 import cors from 'cors';
-import routes from './routes';
-import uplodaConfig from './config/upload';
-import AppError from './errors/AppError';
 
-import './database';
+import uplodaConfig from '@config/upload';
+import AppError from '@shared/errors/AppError';
+
+import routes from '@shared/infra/http/routes';
+
+import '@shared/infra/typeorm';
+import '@shared/container';
 
 const app = express();
 
@@ -35,4 +38,6 @@ app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
   });
 });
 
-export default app;
+app.listen(3333, () => {
+  console.log('🚀 Server on in port 3333!');
+});
