@@ -1,19 +1,25 @@
-import FakeBCryptHashProvider from '../providers/HashProvider/fakes/FakeBCryptHashProvider';
+import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
 import FakeUserRepository from '../repositories/fakes/FakeUserRepository';
 
 import CreateUserService from './CreateUserSevice';
 import AppError from '@shared/errors/AppError';
 
-describe('CreateUserService', () => {
-  it('should be able to create new user', async () => {
-    const fakeUserRepository = new FakeUserRepository();
-    const fakeHashProvider = new FakeBCryptHashProvider();
+let fakeUserRepository: FakeUserRepository;
+let fakeHashProvider: FakeHashProvider;
+let createUserService: CreateUserService;
 
-    const createUserService = new CreateUserService(
+describe('CreateUserService', () => {
+  beforeEach(() => {
+    fakeUserRepository = new FakeUserRepository();
+    fakeHashProvider = new FakeHashProvider();
+
+    createUserService = new CreateUserService(
       fakeUserRepository,
       fakeHashProvider,
     );
+  });
 
+  it('should be able to create new user', async () => {
     const user = await createUserService.execute({
       name: 'teste',
       email: 'teste@gobarber.com',
@@ -26,14 +32,6 @@ describe('CreateUserService', () => {
   });
 
   it('should not be able to create user with same email from another', async () => {
-    const fakeUserRepository = new FakeUserRepository();
-    const fakeHashProvider = new FakeBCryptHashProvider();
-
-    const createUserService = new CreateUserService(
-      fakeUserRepository,
-      fakeHashProvider,
-    );
-
     await createUserService.execute({
       name: 'teste',
       email: 'teste@gobarber.com',

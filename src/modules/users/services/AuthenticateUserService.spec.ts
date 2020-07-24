@@ -1,24 +1,28 @@
 import FakeUserRepository from '../repositories/fakes/FakeUserRepository';
-import FakeBCryptHashProvider from '../providers/HashProvider/fakes/FakeBCryptHashProvider';
+import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
 
 import AuthenticateUserService from './AuthenticateUserService';
 import CreateUserService from './CreateUserSevice';
 import AppError from '@shared/errors/AppError';
 
+let fakeUserRepository: FakeUserRepository;
+let fakeHashProvider: FakeHashProvider;
+let createUser: CreateUserService;
+let athenticateUser: AuthenticateUserService;
+
 describe('AthenticateUserService', () => {
+  beforeEach(() => {
+    fakeUserRepository = new FakeUserRepository();
+    fakeHashProvider = new FakeHashProvider();
+
+    createUser = new CreateUserService(fakeUserRepository, fakeHashProvider);
+    athenticateUser = new AuthenticateUserService(
+      fakeUserRepository,
+      fakeHashProvider,
+    );
+  });
+
   it('should be able to athenticate', async () => {
-    const fakeUserRepository = new FakeUserRepository();
-    const fakeHashProvider = new FakeBCryptHashProvider();
-
-    const createUser = new CreateUserService(
-      fakeUserRepository,
-      fakeHashProvider,
-    );
-    const athenticateUser = new AuthenticateUserService(
-      fakeUserRepository,
-      fakeHashProvider,
-    );
-
     const user = await createUser.execute({
       name: 'teste',
       email: 'teste@gobarber.com',
@@ -35,14 +39,6 @@ describe('AthenticateUserService', () => {
   });
 
   it('should not be able to athenticate with non existing user', async () => {
-    const fakeUserRepository = new FakeUserRepository();
-    const fakeHashProvider = new FakeBCryptHashProvider();
-
-    const athenticateUser = new AuthenticateUserService(
-      fakeUserRepository,
-      fakeHashProvider,
-    );
-
     await expect(
       athenticateUser.execute({
         email: 'teste@gobarber.com',
@@ -52,18 +48,6 @@ describe('AthenticateUserService', () => {
   });
 
   it('should not be able to athenticate with wrong password', async () => {
-    const fakeUserRepository = new FakeUserRepository();
-    const fakeHashProvider = new FakeBCryptHashProvider();
-
-    const createUser = new CreateUserService(
-      fakeUserRepository,
-      fakeHashProvider,
-    );
-    const athenticateUser = new AuthenticateUserService(
-      fakeUserRepository,
-      fakeHashProvider,
-    );
-
     await createUser.execute({
       name: 'teste',
       email: 'teste@gobarber.com',

@@ -35,9 +35,9 @@ class UserRepository implements IUsersRepository {
   public async save(user: User): Promise<User> {
     const findIndex = this.users.findIndex(userFind => userFind.id === user.id);
 
-    this.users[findIndex] = user;
+    Object.assign(this.users[findIndex], user);
 
-    return user;
+    return this.users[findIndex];
   }
 }
 
