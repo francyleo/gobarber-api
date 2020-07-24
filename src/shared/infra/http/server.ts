@@ -18,7 +18,7 @@ app.use(cors());
 
 app.use(express.json());
 
-app.use('/files', express.static(uplodaConfig.directory));
+app.use('/files', express.static(uplodaConfig.uploadsFolder));
 
 app.use(routes);
 
