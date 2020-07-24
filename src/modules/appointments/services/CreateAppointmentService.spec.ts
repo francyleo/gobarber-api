@@ -1,5 +1,3 @@
-import 'reflect-metadata';
-
 import AppError from '@shared/errors/AppError';
 import CreateAppointmentService from './CreateAppointmentService';
 import FakeAppointmentsRepository from '../repositories/fakes/FakeAppointmentsRepository';
@@ -7,6 +5,7 @@ import FakeAppointmentsRepository from '../repositories/fakes/FakeAppointmentsRe
 describe('CreateAppointmentService', () => {
   it('should be able to create a new appointment', async () => {
     const fakeAppointmentsRepository = new FakeAppointmentsRepository();
+
     const createAppointmentService = new CreateAppointmentService(
       fakeAppointmentsRepository,
     );

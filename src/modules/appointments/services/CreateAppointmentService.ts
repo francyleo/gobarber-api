@@ -1,5 +1,5 @@
 import Appointment from '../infra/typeorm/entities/Appointment';
-import { inject, injectable } from 'tsyringe';
+import { injectable, inject } from 'tsyringe';
 
 import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository';
 
