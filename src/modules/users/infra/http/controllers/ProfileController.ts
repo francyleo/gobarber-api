@@ -3,6 +3,7 @@ import { container } from 'tsyringe';
 
 import UpdateProfileService from '@modules/users/services/UpdateProfileService';
 import ShowProfileService from '@modules/users/services/ShowProfileService';
+import { de } from 'date-fns/locale';
 
 class ProfileController {
   public async show(request: Request, response: Response): Promise<Response> {
@@ -11,6 +12,8 @@ class ProfileController {
     const showProfile = container.resolve(ShowProfileService);
 
     const user = await showProfile.execute({ user_id });
+
+    delete user.password;
 
     return response.json(user);
   }

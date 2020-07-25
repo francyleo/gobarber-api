@@ -8,6 +8,7 @@ const profileRouter = Router();
 
 profileRouter.use(ensureMiddleware);
 
+profileRouter.get('/', ProfileController.show);
 profileRouter.put('/', ProfileController.update);
 
 export default profileRouter;
