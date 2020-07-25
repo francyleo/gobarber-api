@@ -6,14 +6,8 @@ import CreateAppointmentService from '@modules/appointments/services/CreateAppoi
 import { parseISO } from 'date-fns';
 
 class AppointmentsController {
-  public async index(request: Request, response: Response): Promise<Response> {
-    // const appointments = await appointmentsRepository.find();
-    // return response.json(appointments);
-
-    return response.send();
-  }
-
   public async create(request: Request, response: Response): Promise<Response> {
+    const user_id = request.user.id;
     const { provider_id, date } = request.body;
 
     const parsedDate = parseISO(date);
@@ -21,6 +15,7 @@ class AppointmentsController {
     const createAppointment = container.resolve(CreateAppointmentService);
 
     const appointment = await createAppointment.execute({
+      user_id,
       provider_id,
       date: parsedDate,
     });
