@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { celebrate, Segments, Joi } from 'celebrate';
 
 import ProvidersController from '../controllers/ProvidersController';
 import ProvidersDayAvailabilityController from '../controllers/ProvidersDayAvailabilityController';
@@ -13,11 +14,21 @@ providersRouter.get('/', ProvidersController.index);
 
 providersRouter.get(
   '/:provider_id/day-availability',
+  celebrate({
+    [Segments.PARAMS]: {
+      provider_id: Joi.string().uuid().required(),
+    },
+  }),
   ProvidersDayAvailabilityController.index,
 );
 
 providersRouter.get(
   '/:provider_id/month-availability',
+  celebrate({
+    [Segments.PARAMS]: {
+      provider_id: Joi.string().uuid().required(),
+    },
+  }),
   ProvidersMonthAvailabilityController.index,
 );
 
