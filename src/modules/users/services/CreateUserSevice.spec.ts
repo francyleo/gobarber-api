@@ -3,24 +3,28 @@ import FakeUserRepository from '../repositories/fakes/FakeUserRepository';
 
 import CreateUserService from './CreateUserSevice';
 import AppError from '@shared/errors/AppError';
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 
 let fakeUserRepository: FakeUserRepository;
 let fakeHashProvider: FakeHashProvider;
-let createUserService: CreateUserService;
+let createUser: CreateUserService;
+let fakeCacheProvider: FakeCacheProvider;
 
 describe('CreateUserService', () => {
   beforeEach(() => {
     fakeUserRepository = new FakeUserRepository();
     fakeHashProvider = new FakeHashProvider();
+    fakeCacheProvider = new FakeCacheProvider();
 
-    createUserService = new CreateUserService(
+    createUser = new CreateUserService(
       fakeUserRepository,
       fakeHashProvider,
+      fakeCacheProvider,
     );
   });
 
   it('should be able to create new user', async () => {
-    const user = await createUserService.execute({
+    const user = await createUser.execute({
       name: 'teste',
       email: 'teste@gobarber.com',
       password: '123456',
@@ -32,14 +36,14 @@ describe('CreateUserService', () => {
   });
 
   it('should not be able to create user with same email from another', async () => {
-    await createUserService.execute({
+    await createUser.execute({
       name: 'teste',
       email: 'teste@gobarber.com',
       password: '123456',
     });
 
     await expect(
-      createUserService.execute({
+      createUser.execute({
         name: 'teste',
         email: 'teste@gobarber.com',
         password: '123456',
